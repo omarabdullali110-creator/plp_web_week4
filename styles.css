@@ -1,42 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
 
-/* --- Reset & Variables --- */
+/* --- 3. CSS Custom Properties (:root theme) --- */
+:root {
+    --brand-color: #2563eb;
+    --accent-color: #3b82f6;
+    --bg-surface: #f8fafc;
+    --card-surface: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --shadow-color: rgba(15, 23, 42, 0.08);
+}
+
+/* --- Stretch Goal: Dark Theme --- */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --brand-color: #3b82f6;
+        --accent-color: #60a5fa;
+        --bg-surface: #0f172a;
+        --card-surface: #1e293b;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --border-color: #334155;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* --- Reset & Global Styles --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-:root {
-    --font-heading: 'Inter', sans-serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
-    --bg-app: #f8fafc;
-    --bg-card: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --primary: #2563eb;
-    --primary-light: #eff6ff;
-    --border: #e2e8f0;
-}
-
 body {
-    font-family: var(--font-body);
-    background-color: var(--bg-app);
-    color: var(--text-main);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
     line-height: 1.5;
 }
 
-/* --- Layout Grid --- */
+/* --- 2. CSS Grid for Overall Page Layout --- */
 .dashboard-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 240px 1fr;
     min-height: 100vh;
 }
 
-/* --- Sidebar --- */
+/* --- 2. Flexbox for Sidebar Content --- */
 .sidebar {
-    width: 240px;
-    background-color: var(--bg-card);
-    border-right: 1px solid var(--border);
+    background-color: var(--card-surface);
+    border-right: 1px solid var(--border-color);
     padding: 24px;
     display: flex;
     flex-direction: column;
@@ -50,16 +64,16 @@ body {
 }
 
 .brand-logo {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 8px;
     object-fit: cover;
 }
 
 .brand h2 {
-    font-family: var(--font-heading);
+    font-family: 'Inter', sans-serif;
     font-size: 1.25rem;
-    font-weight: 700;
+    color: var(--text-primary);
 }
 
 .nav-menu {
@@ -68,33 +82,34 @@ body {
     gap: 8px;
 }
 
+/* Flexbox for sidebar item link alignment */
 .nav-menu a {
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     padding: 10px 14px;
     border-radius: 8px;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .nav-menu a:hover {
-    background-color: var(--bg-app);
-    color: var(--text-main);
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
 }
 
 .nav-menu a.active {
-    background-color: var(--primary-light);
-    color: var(--primary);
-    font-weight: 600;
+    background-color: var(--brand-color);
+    color: #ffffff;
 }
 
 /* --- Main Content --- */
 .main-content {
-    flex: 1;
     padding: 32px;
 }
 
-/* --- Header --- */
+/* --- 2. Flexbox inside Header --- */
 .top-header {
     display: flex;
     justify-content: space-between;
@@ -103,61 +118,96 @@ body {
 }
 
 .top-header h1 {
-    font-family: var(--font-heading);
+    font-family: 'Inter', sans-serif;
     font-size: 1.75rem;
-    font-weight: 700;
+    color: var(--text-primary);
 }
 
 .top-header p {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 0.95rem;
 }
 
 .user-profile {
+    display: flex;
+    align-items: center;
     font-weight: 600;
-    background-color: var(--bg-card);
+    background-color: var(--card-surface);
     padding: 8px 16px;
     border-radius: 20px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
     font-size: 0.9rem;
 }
 
-/* --- Category Cards Grid --- */
+/* --- 2. CSS Grid for Cards Layout --- */
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
 }
 
+/* --- 2. Flexbox inside each Dashboard Card --- */
 .category-card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border);
+    background-color: var(--card-surface);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 20px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.category-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    outline: none;
+    
+    /* 5. Micro-interactions transition (< 250ms) */
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
 }
 
 .category-card .icon {
     font-size: 1.5rem;
-    display: inline-block;
     margin-bottom: 12px;
 }
 
 .category-card h3 {
     font-size: 0.95rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-weight: 500;
     margin-bottom: 4px;
 }
 
 .category-card .amount {
-    font-family: var(--font-heading);
+    font-family: 'Inter', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--text-main);
+    color: var(--text-primary);
+}
+
+/* --- 5. Micro-interactions: Hover and Keyboard Focus Animations --- */
+.category-card:hover,
+.category-card:focus {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px var(--shadow-color);
+    border-color: var(--accent-color);
+    cursor: pointer;
+}
+
+/* --- 4. Responsive Media Query (Below 768px) --- */
+@media (max-width: 768px) {
+    .dashboard-container {
+        grid-template-columns: 1fr; /* Single column layout */
+    }
+
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr; /* Single column card stack */
+    }
 }
